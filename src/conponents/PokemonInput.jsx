@@ -6,24 +6,16 @@ const PokemonInput = ({ onSearch }) => {
   const handleInputChange = (e) => {
     const value = e.target.value;
     setInputValue(value); // 입력 값을 상태로 관리
-  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // 기본 폼 동작 방지
-
-    if (inputValue.trim() !== "") {
-      onSearch(inputValue.trim()); // 부모 컴포넌트로 입력 값 전달
+    if (value.trim() === "") {
+      onSearch(""); // 검색어가 없으면 모든 결과를 표시
     } else {
-      alert("유효한 포켓몬 이름을 입력해주세요"); // 잘못된 값 처리
+      onSearch(value.trim()); // 검색어로 결과 필터링
     }
-    setInputValue("");
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-    >
+    <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       <div className="mb-4">
         <label
           className="block text-gray-700 text-sm font-bold mb-2"
@@ -41,14 +33,7 @@ const PokemonInput = ({ onSearch }) => {
           aria-label="포켓몬 이름 입력"
         />
       </div>
-      <div className="flex items-center justify-between">
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        >
-          검색
-        </button>
-      </div>
+      <div className="flex items-center justify-between"></div>
     </form>
   );
 };
