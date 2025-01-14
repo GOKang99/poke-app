@@ -7,6 +7,7 @@ const PokemonList = ({
   error,
   onSearch,
   onGenerationChange,
+  generation,
 }) => {
   if (loading) {
     return <Loading />;
@@ -32,7 +33,11 @@ const PokemonList = ({
             key={gen}
             value={gen}
             onClick={handleGenerationChange}
-            className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-700"
+            className={`px-3 py-1 rounded ${
+              generation === gen
+                ? "bg-green-500 text-white"
+                : "bg-blue-500 text-white hover:bg-blue-700"
+            }`}
           >
             {gen}세대
           </button>

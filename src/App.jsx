@@ -11,7 +11,7 @@ function App() {
   const [filteredPokemons, setFilteredPokemons] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [generation, setGeneration] = useState(1); // 세대 상태 추가
+  const [generation, setGeneration] = useState(2); // 세대 상태 추가
 
   const generationRanges = {
     1: [1, 151],
@@ -25,7 +25,15 @@ function App() {
     9: [899, 1025],
   };
 
+  const handleGenerationChange = (gen) => {
+    setGeneration((prevGen) => (prevGen === gen ? null : gen));
+  };
+
   const filterPokemonsByGeneration = (gen) => {
+    if (gen === null) {
+      // generation이 null이면 모든 포켓몬 반환
+      return allPokemons;
+    }
     const [start, end] = generationRanges[gen];
     return allPokemons.filter(
       (pokemon) => pokemon.id >= start && pokemon.id <= end
@@ -47,7 +55,6 @@ function App() {
       const data = await response.json();
       const pokemonDetails = [];
       const batchSize = 50;
-      const totalBatches = Math.ceil(data.results.length / batchSize);
       const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
       for (let i = 0; i < data.results.length; i += batchSize) {
@@ -108,7 +115,8 @@ function App() {
                 );
                 setFilteredPokemons(results);
               }}
-              onGenerationChange={setGeneration}
+              onGenerationChange={handleGenerationChange}
+              generation={generation}
             />
           }
         ></Route>
