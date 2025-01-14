@@ -4,6 +4,8 @@ const PokemonQuiz = ({ pokemons }) => {
   const [currentPokemon, setCurrentPokemon] = useState(null); // 현재 퀴즈에 등장하는 포켓몬
   const [score, setScore] = useState(0); // 점수 관리
   const [userInput, setUserInput] = useState(""); // 사용자 입력
+  const [isWrong, setIsWrong] = useState(false); //오답여부
+  const [isCorrect, setIsCorrect] = useState(false); //정답여부
 
   // 랜덤 포켓몬 선택
   const getRandomPokemon = () => {
@@ -16,6 +18,8 @@ const PokemonQuiz = ({ pokemons }) => {
     const randomPokemon = getRandomPokemon();
     setCurrentPokemon(randomPokemon);
     setUserInput(""); // 사용자 입력 초기화
+    setIsWrong(false); //새 퀴즈 시작시 false로 변경
+    setIsCorrect(false);
   };
 
   // 사용자가 입력 제출 시 호출되는 함수
@@ -26,11 +30,15 @@ const PokemonQuiz = ({ pokemons }) => {
 
     if (userInput.trim() === currentPokemon.name) {
       setScore((prevScore) => prevScore + 1); // 정답 시 점수 증가
+      setIsCorrect(true);
     } else {
       setScore((prevScore) => Math.max(prevScore - 1, 0)); // 오답 시 점수 감소, 최소 점수는 0
+      setIsWrong(true);
     }
-
-    startNewQuiz(); // 새로운 퀴즈 시작
+    // 새로운 퀴즈 시작
+    setTimeout(() => {
+      startNewQuiz();
+    }, 1000);
   };
 
   // 컴포넌트가 마운트되면 첫 번째 퀴즈 시작
@@ -52,6 +60,8 @@ const PokemonQuiz = ({ pokemons }) => {
             alt="포켓몬"
           />
           <p className="text-gray-500">포켓몬을 맞혀보세요!</p>
+          {isWrong && <p className="text-red-500">{currentPokemon.name}</p>}
+          {isCorrect && <p className="text-blue-500">정답입니다!</p>}
         </div>
       )}
       <form onSubmit={handleSubmit} className="text-center mt-4">
