@@ -6,6 +6,7 @@ const PokemonQuiz = ({ pokemons }) => {
   const [userInput, setUserInput] = useState(""); // 사용자 입력
   const [isWrong, setIsWrong] = useState(false); //오답여부
   const [isCorrect, setIsCorrect] = useState(false); //정답여부
+  const [canSubmit, setCanSubmit] = useState(true); // 제출 가능 상태 추가
 
   // 랜덤 포켓몬 선택
   const getRandomPokemon = () => {
@@ -19,14 +20,14 @@ const PokemonQuiz = ({ pokemons }) => {
     setCurrentPokemon(randomPokemon);
     setUserInput(""); // 사용자 입력 초기화
     setIsWrong(false); //새 퀴즈 시작시 false로 변경
-    setIsCorrect(false);
+    setIsCorrect(false); //새 퀴즈 시작시 정답 false
+    setCanSubmit(true); // 새로운 퀴즈 시작 시 제출 가능
   };
 
   // 사용자가 입력 제출 시 호출되는 함수
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (!currentPokemon) return;
+    if (!currentPokemon || !canSubmit) return; // 제출 불가 상태에서 동작 차단
 
     if (userInput.trim() === currentPokemon.name) {
       setScore((prevScore) => prevScore + 1); // 정답 시 점수 증가
@@ -35,6 +36,8 @@ const PokemonQuiz = ({ pokemons }) => {
       setScore((prevScore) => Math.max(prevScore - 1, 0)); // 오답 시 점수 감소, 최소 점수는 0
       setIsWrong(true);
     }
+    //퀴즈 시작 전 제출 비활성화.
+    setCanSubmit(false);
     // 새로운 퀴즈 시작
     setTimeout(() => {
       startNewQuiz();
