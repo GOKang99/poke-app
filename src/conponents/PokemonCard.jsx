@@ -1,25 +1,58 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import SingleCard from "./SingleCard";
 const cardImages = [
-  { src: "/images/1.png" },
-  { src: "/images/6.png" },
-  { src: "/images/7.png" },
-  { src: "/images/143.png" },
-  { src: "/images/382.png" },
-  { src: "/images/493.png" },
+  { src: "/images/1.png", matched: false },
+  { src: "/images/6.png", matched: false },
+  { src: "/images/7.png", matched: false },
+  { src: "/images/143.png", matched: false },
+  { src: "/images/382.png", matched: false },
+  { src: "/images/493.png", matched: false },
 ];
 
 function PokemonCard() {
   const [cards, setCards] = useState([]);
   const [turns, setTurns] = useState(0);
+  const [choiceOne, setChoiceOne] = useState(null); //첫번째 선택 카드
+  const [choiceTwo, setChoiceTwo] = useState(null); //두번째 선택 카드
 
   const shuffleCards = () => {
     const shuffledCards = [...cardImages, ...cardImages]
       .sort(() => Math.random() - 0.5)
       .map((card) => ({ ...card, id: Math.random() }));
-
     setCards(shuffledCards);
     setTurns(0);
-    console.log(cards);
+  };
+  //카드 선택시 기억하기
+  function handleChoice(card) {
+    choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
+  }
+  //카드 선택 후 두 카드가 같은지 확인
+  useEffect(() => {
+    if (choiceOne && choiceTwo) {
+      if (choiceOne.src === choiceTwo.src && choiceOne.id !== choiceTwo.id) {
+        //카드가 같으면 카드를 유지
+        setCards((prevCards) => {
+          return prevCards.map((card) => {
+            if (card.src === choiceOne.src) {
+              return { ...card, matched: true };
+            } else {
+              return card;
+            }
+          });
+        });
+        //맞았을 때
+        resetTurn();
+      } else {
+        // 틀렸을 때
+        setTimeout(() => resetTurn(), 1000);
+      }
+    }
+  }, [choiceOne, choiceTwo]);
+
+  const resetTurn = () => {
+    setChoiceOne(null);
+    setChoiceTwo(null);
+    setTurns((prev) => prev + 1);
   };
 
   return (
@@ -31,25 +64,15 @@ function PokemonCard() {
       >
         New Game
       </button>
+      <p>턴수:{turns}</p>
       <div className="grid grid-cols-4 gap-4">
         {cards.map((card) => (
-          <div
-            className="card border-2 border-gray-300 rounded-lg shadow-md"
+          <SingleCard
             key={card.id}
-          >
-            <div>
-              <img
-                className="front w-full rounded-lg"
-                src={card.src}
-                alt="card front"
-              />
-              <img
-                className="back w-full rounded-lg"
-                src="/logo.png"
-                alt="card back"
-              />
-            </div>
-          </div>
+            card={card}
+            handleChoice={handleChoice}
+            flipped={card === choiceOne || card === choiceTwo || card.matched}
+          />
         ))}
       </div>
     </div>
