@@ -125,7 +125,10 @@ function App() {
           path="/quiz"
           element={<PokemonQuiz pokemons={filteredPokemons} />}
         ></Route>
-        <Route path="/card" element={<PokemonCard />}></Route>
+        <Route
+          path="/card"
+          element={<PokemonCard pokemons={filteredPokemons} />}
+        ></Route>
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </BrowserRouter>

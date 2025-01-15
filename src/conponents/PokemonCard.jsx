@@ -1,32 +1,52 @@
 import { useEffect, useState } from "react";
 import SingleCard from "./SingleCard";
-const cardImages = [
-  { src: "/images/1.png", matched: false },
-  { src: "/images/6.png", matched: false },
-  { src: "/images/7.png", matched: false },
-  { src: "/images/143.png", matched: false },
-  { src: "/images/382.png", matched: false },
-  { src: "/images/493.png", matched: false },
-];
+// const cardImages = [
+//   { src: "/images/1.png", matched: false },
+//   { src: "/images/6.png", matched: false },
+//   { src: "/images/7.png", matched: false },
+//   { src: "/images/143.png", matched: false },
+//   { src: "/images/382.png", matched: false },
+//   { src: "/images/493.png", matched: false },
+// ];
 
-function PokemonCard() {
+function PokemonCard({ pokemons }) {
   const [cards, setCards] = useState([]);
   const [turns, setTurns] = useState(0);
   const [choiceOne, setChoiceOne] = useState(null); //첫번째 선택 카드
   const [choiceTwo, setChoiceTwo] = useState(null); //두번째 선택 카드
   const [disabled, setDisabled] = useState(false);
 
+  //포켓몬 배열에서 6개 랜덤 선택
+  const getRandomPokemons = () => {
+    const shuffled = [...pokemons].sort(() => Math.random() - 0.5); // 포켓몬 배열 섞기
+    console.log(shuffled.slice(0, 6));
+    return shuffled.slice(0, 6); // 처음 6개 선택
+  };
+
+  //카드 데이터 생성
+  const generateCardImages = () => {
+    const selectedPokemons = getRandomPokemons();
+    return selectedPokemons.map((pokemon) => ({
+      src: pokemon.imageUrl,
+      matched: false,
+    }));
+  };
+
+  //카드 섞기
   const shuffleCards = () => {
-    const shuffledCards = [...cardImages, ...cardImages]
+    const selectedPokemons = generateCardImages();
+    const shuffledCards = [...selectedPokemons, ...selectedPokemons]
       .sort(() => Math.random() - 0.5)
       .map((card) => ({ ...card, id: Math.random() }));
     setCards(shuffledCards);
     setTurns(0);
   };
+
   //카드 선택시 기억하기
   function handleChoice(card) {
     choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
   }
+
   //카드 선택 후 두 카드가 같은지 확인
   useEffect(() => {
     if (choiceOne && choiceTwo) {
@@ -51,6 +71,7 @@ function PokemonCard() {
     }
   }, [choiceOne, choiceTwo]);
 
+  //두가지 카드가 틀렸을 때 선택 카드 초기화, 턴+1
   const resetTurn = () => {
     setChoiceOne(null);
     setChoiceTwo(null);
