@@ -71,6 +71,13 @@ function PokemonCard({ pokemons }) {
     }
   }, [choiceOne, choiceTwo]);
 
+  // 모든 카드가 매칭된 상태인지 확인
+  useEffect(() => {
+    if (cards.length > 0 && cards.every((card) => card.matched)) {
+      alert("축하합니다! 다음 단계에 도전해보세요!");
+    }
+  }, [cards]);
+
   //두가지 카드가 틀렸을 때 선택 카드 초기화, 턴+1
   const resetTurn = () => {
     setChoiceOne(null);
