@@ -12,7 +12,7 @@ function App() {
   const [filteredPokemons, setFilteredPokemons] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [generation, setGeneration] = useState(2); // 세대 상태 추가
+  const [generation, setGeneration] = useState(null); // 세대 상태 추가
 
   const generationRanges = {
     1: [1, 151],
