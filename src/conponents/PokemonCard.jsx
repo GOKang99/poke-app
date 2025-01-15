@@ -14,6 +14,7 @@ function PokemonCard() {
   const [turns, setTurns] = useState(0);
   const [choiceOne, setChoiceOne] = useState(null); //첫번째 선택 카드
   const [choiceTwo, setChoiceTwo] = useState(null); //두번째 선택 카드
+  const [disabled, setDisabled] = useState(false);
 
   const shuffleCards = () => {
     const shuffledCards = [...cardImages, ...cardImages]
@@ -29,6 +30,7 @@ function PokemonCard() {
   //카드 선택 후 두 카드가 같은지 확인
   useEffect(() => {
     if (choiceOne && choiceTwo) {
+      setDisabled(true);
       if (choiceOne.src === choiceTwo.src && choiceOne.id !== choiceTwo.id) {
         //카드가 같으면 카드를 유지
         setCards((prevCards) => {
@@ -53,6 +55,7 @@ function PokemonCard() {
     setChoiceOne(null);
     setChoiceTwo(null);
     setTurns((prev) => prev + 1);
+    setDisabled(false);
   };
 
   return (
@@ -72,6 +75,7 @@ function PokemonCard() {
             card={card}
             handleChoice={handleChoice}
             flipped={card === choiceOne || card === choiceTwo || card.matched}
+            disabled={disabled}
           />
         ))}
       </div>
