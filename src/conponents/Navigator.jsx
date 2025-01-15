@@ -14,6 +14,9 @@ const Navigator = () => {
           <Link to="/quiz" className="text-white hover:text-blue-300 px-4">
             퀴즈 게임
           </Link>
+          <Link to="/card" className="text-white hover:text-blue-300 px-4">
+            카드게임
+          </Link>
         </div>
       </div>
     </nav>

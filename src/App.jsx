@@ -5,6 +5,7 @@ import PokemonList from "./conponents/PokemonList";
 import NotFound from "./conponents/Notfound";
 import PokemonQuiz from "./conponents/PokemonQuiz";
 import Navigator from "./conponents/Navigator";
+import PokemonCard from "./conponents/PokemonCard";
 
 function App() {
   const [allPokemons, setAllPokemons] = useState([]);
@@ -124,6 +125,7 @@ function App() {
           path="/quiz"
           element={<PokemonQuiz pokemons={filteredPokemons} />}
         ></Route>
+        <Route path="/card" element={<PokemonCard />}></Route>
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </BrowserRouter>
