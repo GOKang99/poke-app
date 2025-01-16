@@ -16,12 +16,17 @@ function PokemonCard({ pokemons }) {
   const [choiceTwo, setChoiceTwo] = useState(null); //두번째 선택 카드
   const [disabled, setDisabled] = useState(false);
   const [initialFlip, setInitialFlip] = useState(true); // 초기 애니메이션 상태
+  const [level, setLevel] = useState("초급"); //레벨 상태 초급
 
-  //포켓몬 배열에서 6개 랜덤 선택
+  //레벨에 따른 등장 포켓몬 개수
+  const getPokemonCount = () => {
+    return level === "초급" ? 6 : 8;
+  };
+
+  //포켓몬 선택 함수
   const getRandomPokemons = () => {
     const shuffled = [...pokemons].sort(() => Math.random() - 0.5); // 포켓몬 배열 섞기
-    console.log(shuffled.slice(0, 6));
-    return shuffled.slice(0, 6); // 처음 6개 선택
+    return shuffled.slice(0, getPokemonCount()); //
   };
 
   //카드 데이터 생성
@@ -48,7 +53,7 @@ function PokemonCard({ pokemons }) {
       setCards((prevCards) =>
         prevCards.map((card) => ({ ...card, flipped: false }))
       );
-    }, shuffledCards.length * 100);
+    }, shuffledCards.length * 110);
   };
 
   //카드 선택시 기억하기
@@ -104,6 +109,14 @@ function PokemonCard({ pokemons }) {
       >
         New Game
       </button>
+      <select
+        value={level}
+        onChange={(e) => setLevel(e.target.value)}
+        className="mb-4 px-4 py-2 border rounded"
+      >
+        <option value="초급">초급</option>
+        <option value="중급">중급</option>
+      </select>
       <p>턴수:{turns}</p>
       <div
         className={`grid grid-cols-4 gap-4 ${
