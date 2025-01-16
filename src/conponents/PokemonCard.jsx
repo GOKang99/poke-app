@@ -15,6 +15,7 @@ function PokemonCard({ pokemons }) {
   const [choiceOne, setChoiceOne] = useState(null); //첫번째 선택 카드
   const [choiceTwo, setChoiceTwo] = useState(null); //두번째 선택 카드
   const [disabled, setDisabled] = useState(false);
+  const [initialFlip, setInitialFlip] = useState(true); // 초기 애니메이션 상태
 
   //포켓몬 배열에서 6개 랜덤 선택
   const getRandomPokemons = () => {
@@ -40,12 +41,28 @@ function PokemonCard({ pokemons }) {
       .map((card) => ({ ...card, id: Math.random() }));
     setCards(shuffledCards);
     setTurns(0);
+
+    setInitialFlip(true); // 초기 애니메이션 활성화
+    setTimeout(() => {
+      setInitialFlip(false);
+      setCards((prevCards) =>
+        prevCards.map((card) => ({ ...card, flipped: false }))
+      );
+    }, shuffledCards.length * 100);
   };
 
   //카드 선택시 기억하기
   function handleChoice(card) {
     choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
   }
+
+  //두가지 카드가 틀렸을 때 선택 카드 초기화, 턴+1
+  const resetTurn = () => {
+    setChoiceOne(null);
+    setChoiceTwo(null);
+    setTurns((prev) => prev + 1);
+    setDisabled(false);
+  };
 
   //카드 선택 후 두 카드가 같은지 확인
   useEffect(() => {
@@ -74,17 +91,9 @@ function PokemonCard({ pokemons }) {
   // 모든 카드가 매칭된 상태인지 확인
   useEffect(() => {
     if (cards.length > 0 && cards.every((card) => card.matched)) {
-      alert("축하합니다! 다음 단계에 도전해보세요!");
+      setTimeout(() => alert("축하합니다! 다음 단계에 도전해보세요!"), 500);
     }
   }, [cards]);
-
-  //두가지 카드가 틀렸을 때 선택 카드 초기화, 턴+1
-  const resetTurn = () => {
-    setChoiceOne(null);
-    setChoiceTwo(null);
-    setTurns((prev) => prev + 1);
-    setDisabled(false);
-  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
@@ -96,7 +105,11 @@ function PokemonCard({ pokemons }) {
         New Game
       </button>
       <p>턴수:{turns}</p>
-      <div className="grid grid-cols-4 gap-4">
+      <div
+        className={`grid grid-cols-4 gap-4 ${
+          initialFlip ? "initial-flip" : ""
+        }`}
+      >
         {cards.map((card) => (
           <SingleCard
             key={card.id}
