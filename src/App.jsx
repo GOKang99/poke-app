@@ -55,7 +55,7 @@ function App() {
 
       const data = await response.json();
       const pokemonDetails = [];
-      const batchSize = 50;
+      const batchSize = 150;
       const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
       for (let i = 0; i < data.results.length; i += batchSize) {
