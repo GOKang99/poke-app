@@ -6,7 +6,9 @@ const Navigator = () => {
     <nav className="bg-gray-800 p-4">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/">
-          <h1 className="text-white text-2xl font-bold">포켓몬 앱</h1>
+          <h1 className="text-white text-2xl font-bold hover:text-orange-500 px-4">
+            포켓몬 앱
+          </h1>
         </Link>
         <div>
           <NavLink to="/" className="text-white hover:text-orange-500 px-4">
