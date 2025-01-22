@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import "./Navigator.css";
+import { Link, NavLink } from "react-router-dom";
 
 const Navigator = () => {
   return (
@@ -8,15 +9,15 @@ const Navigator = () => {
           <h1 className="text-white text-2xl font-bold">포켓몬 앱</h1>
         </Link>
         <div>
-          <Link to="/" className="text-white hover:text-blue-300 px-4">
+          <NavLink to="/" className="text-white hover:text-orange-500 px-4">
             포켓몬 리스트
-          </Link>
-          <Link to="/quiz" className="text-white hover:text-blue-300 px-4">
+          </NavLink>
+          <NavLink to="/quiz" className="text-white hover:text-orange-500 px-4">
             퀴즈 게임
-          </Link>
-          <Link to="/card" className="text-white hover:text-blue-300 px-4">
+          </NavLink>
+          <NavLink to="/card" className="text-white hover:text-orange-500 px-4">
             카드게임
-          </Link>
+          </NavLink>
         </div>
       </div>
     </nav>
