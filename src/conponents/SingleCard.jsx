@@ -16,12 +16,12 @@ function SingleCard({ card, handleChoice, flipped, disabled }) {
       <div className="relative" onClick={handleClick}>
         <div className={flipped ? "flipped" : ""}>
           <img
-            className="front w-32 h-32 object-cover rounded-lg"
+            className="front w-20 h-24 sm:w-32 sm:h-32 object-cover rounded-lg"
             src={card.src}
             alt="card front"
           />
           <img
-            className="back w-32 h-32 object-cover rounded-lg"
+            className="back w-20 h-24 sm:w-32 sm:h-32 object-cover rounded-lg"
             src="/logo.png"
             alt="card back"
           />

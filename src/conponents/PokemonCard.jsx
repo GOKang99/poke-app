@@ -102,7 +102,7 @@ function PokemonCard({ pokemons }) {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h1 className="text-4xl font-bold mb-6">포켓몬 카드게임</h1>
+      <h1 className="text-2xl sm:text-4xl font-bold mb-6 ">포켓몬 카드게임</h1>
       <button
         onClick={shuffleCards}
         className="px-6 py-2 mb-8 bg-blue-500 text-white rounded shadow-lg hover:bg-blue-700 transition"
